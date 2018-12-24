@@ -21,6 +21,8 @@ public interface CacheProvider {
      */
     public Serializable get(String key);
 
+    
+    
     /**
      * 清除cache中对应的值
      * @param key
