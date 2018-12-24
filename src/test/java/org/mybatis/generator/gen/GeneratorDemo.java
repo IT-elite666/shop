@@ -23,6 +23,9 @@ public class GeneratorDemo {
                 .getResourceAsStream("gen/mybatisGeneratorConfig.xml"));
         DefaultShellCallback shellCallback = new DefaultShellCallback(true);
 
+        
+        
+        
         try {
             MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, shellCallback, warnings);
             myBatisGenerator.generate(null);
