@@ -24,6 +24,8 @@
 				</div>
 			</div>
 			<hr>
+			
+			
 			<div class="row">
 				<div class="col-xs-12" style="border: 0px solid;text-align: left;">
 					<#if productList?? && productList?size gt 0>
@@ -94,9 +96,15 @@
 							</div>
 							
 							<div class="row">
-								<a href="${basepath}/order/confirmOrder.html" data-toggle="show" data-placement="top" class="btn btn-success" id="confirmOrderBtn" onclick="return confirmOrder()" disabled="disabled">
-									<span class="glyphicon glyphicon-ok"></span>提交订单
-								</a>
+								<#if user_info?exists>
+									<a href="${basepath}/order/confirmOrder" data-toggle="show" data-placement="top" class="btn btn-success" id="confirmOrderBtn" onclick="return confirmOrder()" disabled="disabled">
+										<span class="glyphicon glyphicon-ok"></span>提交订单
+									</a>
+								<#else>
+									<a href="${basepath}/account/login.ftl?fromUrl=/cart/cart.html" class="btn btn-success" onclick="return toLogin()">
+										<span class="glyphicon glyphicon-ok"></span>提交订单
+									</a>
+								</#if>
 							</div>
 						</div>
 					<#else>
@@ -131,8 +139,11 @@ function deleteFromCart(productId){
 		$("#formDelete").submit();
 	}
 }
-
-//提交订单事件
+//未登录提交订单事件
+function toLogin(){
+	alert("请登录后再提交订单。。");
+}
+//登陆后提交订单事件
 function confirmOrder(){
 	var submitFlg = true;
 	
