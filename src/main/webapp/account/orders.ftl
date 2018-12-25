@@ -152,7 +152,7 @@ font-weight: 700;font-size: 16px;color: #f50;
                                              <#--   href="${basepath}/order/deletes?ids=${item.id!""}"-->
 												<br>
                                                 <#if item.status?? && (item.status =="send" || item.status=="sign")>
-                                                <a target="_blank" href="http://www.kuaidi100.com/chaxun?com=${item.expressCompanyName!""}&nu=${item.expressNo!""}">物流详情</a>
+                                                <a class="logistics" com="${item.expressCompanyName!""}" no="${item.expressNo!""}">物流详情</a>
                                                 </#if>
 												</td>
 											</#if>
@@ -205,6 +205,36 @@ font-weight: 700;font-size: 16px;color: #f50;
 			</div>
 		</div>
 	</div>
+	
+	
+	
+	
+	
+	<div class="recharge-form-mask" style="display:none; z-index: 9998;position: fixed; top: 0; left: 0;background-color: black; opacity: 0.4;width: 100%; height: 100%;"></div>
+	<div class="recharge-form" style="z-index: 9999;
+										display:none;
+										position: fixed;
+										top: 40%;
+										left: 55%;
+										width: 500px;
+										margin: -180px 0 0 -330px;
+										border-radius: 5px;
+										border: solid 2px #666;
+										background-color: #fff;
+										box-shadow: 0 0 10px #666;"> 
+		<div class="recharge-header" style="line-height: 60px;border-bottom: 1px solid #C9C9C9;background-color: #DD4814;color: white;">
+			<a href="javascript:;" title="关闭" style="color: white; float: right;margin-right: 15px;font-size: 20px;" class="recharge-close">×</a>
+			<center style="font-size: 16px;"><b>物流信息</b></center>
+		</div>
+		<div class="recharge-footer" style="padding: 40px 40px;font-size: 14px;">
+			<div>
+				暂无物流信息
+			</div>
+		</div>
+	</div>
+	
+	
+	
 	<script>
 	function deleteOrder(orderid){
 	if(confirm("确认删除该订单？")){
@@ -217,4 +247,49 @@ font-weight: 700;font-size: 16px;color: #f50;
 	return false;
 	}
 	</script>
+	
+	<script>
+		$(function(){
+			$(".logistics").click(function(){
+				  var page = "/jeeshop/order/findLogistics";
+				  var key = "4582f35b6da6ccc123f889d5b98586ca";
+				  var com = $(this).attr("com");
+				  var no = $(this).attr("no");
+		     	  $.ajax({
+		            url: page,
+		            dataType : "json",
+		            data:{"key":key,"com":com,"no":no},
+		            success: function(result){
+		              $(".recharge-form-mask").fadeIn(100);
+					  $(".recharge-form").fadeIn(200);
+					  $(".recharge-footer").html("<div>暂无物流信息</div>");
+					  if(result.resultcode==200&&result.error_code==0){
+					  	  $(".recharge-footer").html("");
+						  for(var i=0;i<result.result.list.length;i++){
+							  $(".recharge-footer").append("<div>--"+result.result.list[i].datetime+":"+result.result.list[i].remark+"</div>");
+						  }
+					  }
+		            }
+		        });
+		   });
+		});
+	</script>
+	
+	<script>
+	$(function() {
+		$('.recharge').click(function() {
+			$(".recharge-form-mask").fadeIn(100);
+			$(".recharge-form").fadeIn(200);
+		});
+		$('.recharge-close').click(function() {
+			$(".recharge-form-mask").fadeOut(100);
+			$(".recharge-form").fadeOut(200);
+		})
+		$('.reset').click(function() {
+			$(".recharge-form-mask").fadeOut(100);
+			$(".recharge-form").fadeOut(200);
+		})
+	});
+</script>
+	
 </@html.htmlBase>
