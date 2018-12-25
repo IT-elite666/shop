@@ -44,6 +44,12 @@
 		              </div>
 		              <div class="panel-body">
 	              		<form role="form" id="form" class="form-horizontal" action="${basepath}/account/doLogin" method="post" theme="simple">
+						  <#if RequestParameters['fromUrl']??>
+						  	<input type="hidden" name="fromUrl" value="/cart/cart.html">
+						  <#else>
+						  	<input type="hidden" name="fromUrl" value="1">
+						  </#if>
+						  
 						  <div class="form-group">
 						    <label for="account" class="col-md-2 control-label">账号</label>
 						    <div class="col-md-6">
