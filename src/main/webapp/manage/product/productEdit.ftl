@@ -93,22 +93,23 @@
                     <div class="form-group">
                         <label class="col-md-2 control-label">简介</label>
                         <div class="col-md-10">
-							<textarea name="introduce" class="form-control" rows="3" id="introduce"
-									  data-rule="商品简介;required;introduce;length[4~500];">${e.introduce!""}</textarea>
+								<textarea name="introduce" class="form-control" rows="3" id="introduce"  data-rule="商品简介;required;introduce;length[4~500];">${e.introduce!""}</textarea>
                         </div>
                     </div>
-
+							
+	
                     <div class="form-group">
                         <label class="col-md-2 control-label">主图</label>
                         <div class="col-md-10">
+                        	<input type="button" id="image3" value="选择图片" />
+                        	<!--
                             <input type="button" name="filemanager" value="浏览图片" class="btn btn-success"/>
-                            <input type="text"  value="${e.picture!""}" name="picture" type="text" id="picture"  ccc="imagesInput" style="width: 600px;"
-                                   data-rule="小图;required;maxPicture;"/>
-							<#if e.picture??>
-                                <a target="_blank" href="${systemSetting().imageRootPath}${e.picture!""}">
-                                    <img style="max-width: 50px;max-height: 50px;" alt="" src="${systemSetting().imageRootPath}${e.picture!""}">
-                                </a>
-							</#if>
+                            -->
+                            <input type="text" size="55" value="${e.picture!""}" name="picture" type="text" id="picture"  ccc="imagesInput" style="width: 600px;"
+                                   data-rule="小图;required;maxPicture;" readonly="readonly"/>
+                              
+                           <img style="max-width: 50px;max-height: 50px;margin-left:20px" id="mainImg" alt="暂无图片" src="${systemSetting().imageRootPath}${e.picture!""}">
+							
                         </div>
                     </div>
                     <div class="form-group col-md-6">
@@ -237,16 +238,32 @@
 				<br>
 				<table class="table table-bordered">
 					<tr style="background-color: #dff0d8">
-						<td>文件</td>
+						<td>选上传图片</td>
 					</tr>
 					<tr id="firstTr">
 						<td>
+						<!--
                             <#list [1..10] as item>
 							<div>
 								<input type="button" name="filemanager" value="浏览图片" class="btn btn-warning"/>
 								<input type="text" ccc="imagesInput" name="images" style="width: 80%;" />
 							</div>
                             </#list>
+                          -->  
+                             <div class="col-md-10">
+                        	<input type="button" class="btn btn-warning" id="image4" value="选择图片" />
+                        	
+                            <input type="text" size="55"  name="picture2" type="text" id="picture2"  ccc="imagesInput" style="width: 600px;"
+                                   data-rule="小图;required;maxPicture;" readonly="readonly"/>
+                            <img style="max-width: 50px;max-height: 50px;margin-left:20px" id="mainImg2" alt="暂无图片">
+							<!-- 保存后方可上传-->
+							<#if e??>
+								<input type="button" class="btn btn-primary" id="saveImgBtn" value="提交" style="margin-left:50px" />
+							<#else>
+								<span style="color:red">注意:先保存商品，然后在上传图片</span>
+							</#if>
+														
+                        </div>
 						</td>
 					</tr>
 				</table>
@@ -485,10 +502,13 @@ function catalogChange(obj){
 <script>
 KindEditor.ready(function(K) {
 	var editor = K.editor({
-		fileManagerJson : '${basepath}/resource/kindeditor-4.1.7/jsp/file_manager_json.jsp'
+		fileManagerJson : '${basepath}/resource/kindeditor-4.1.7/jsp/file_manager_json.jsp',
+		uploadJson: '${basepath}/pic/upload',
+		filePostName : "uploadFile",
 	});
 	K('input[name=filemanager]').click(function() {
 		var imagesInputObj = $(this).parent().children("input[ccc=imagesInput]");
+		
 		editor.loadPlugin('filemanager', function() {
 			editor.plugin.filemanagerDialog({
 				viewType : 'VIEW',
@@ -503,6 +523,38 @@ KindEditor.ready(function(K) {
 			});
 		});
 	});
+	
+	K('#image3').click(function() {
+					editor.loadPlugin('image', function() {
+						editor.plugin.imageDialog({
+							showRemote : false,
+							imageUrl : K('#picture').val(),
+							clickFn : function(url, title, width, height, border, align) {
+								console.log("url="+url);
+								K('#picture').val(url);
+								editor.hideDialog();
+								K('#mainImg').attr("src","${systemSetting().imageRootPath}"+url);
+							}
+						});
+					});
+				});
+				
+				
+		K('#image4').click(function() {
+					editor.loadPlugin('image', function() {
+						editor.plugin.imageDialog({
+							showRemote : false,
+							imageUrl : K('#picture2').val(),
+							clickFn : function(url, title, width, height, border, align) {
+								console.log("url="+url);
+								K('#picture2').val(url);
+								editor.hideDialog();
+								K('#mainImg2').attr("src","${systemSetting().imageRootPath}"+url);
+							}
+						});
+					});
+				});
+	
 	
 });
 </script>
@@ -540,6 +592,12 @@ KindEditor.ready(function(K) {
            onUploadError:function(file, errorCode, errorMsg) {
         	   alert("上传失败,data="+data+",file="+file+",response="+response);   
            }
+	 	});
+	 	
+	 	$("#saveImgBtn").click(function(){
+	 		var path = $("#picture2").val();
+	 		var id=${e.id};
+	 		location.href="${basepath}/manage/product/saveImg/"+id+"?path="+path;
 	 	});
 	});
 	
