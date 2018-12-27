@@ -252,7 +252,7 @@ public class UserAction extends BaseController<User> {
 				}
 			}
 		}
-		return root.values();
+		return new ArrayList(root.values());
 	}
     @RequestMapping("home")
     public String home(){

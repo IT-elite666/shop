@@ -1,5 +1,7 @@
 package net.jeeshop.core.system.bean;
 
+import java.io.Serializable;
+
 import net.jeeshop.core.dao.page.PagerModel;
 
 /**
@@ -7,7 +9,7 @@ import net.jeeshop.core.dao.page.PagerModel;
  * @author huangf
  *
  */
-public class Menu extends PagerModel {
+public class Menu extends PagerModel implements Serializable {
 	private String pid;
 	private String url;
 	private String name;

@@ -28,6 +28,17 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <!-- 配置有spring来管理session -->
+    <filter>
+	    <filter-name>springSessionRepositoryFilter</filter-name>
+	    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+	    <filter-name>springSessionRepositoryFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping>
+    
+    
     <servlet-mapping>
         <servlet-name>springMvc</servlet-name>
         <url-pattern>/</url-pattern>

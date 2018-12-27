@@ -4,6 +4,7 @@
  */
 package net.jeeshop.core.system.bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,11 @@ import org.apache.commons.lang.StringUtils;
 /**
  * 页面上显示的菜单项，每一个MenuItem对应一个节点
  */
-public class MenuItem {
+public class MenuItem implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String id;// 0：根节点，否则是子节点
 	private String pid;// 菜单项的父亲节点
 	private String url;// 菜单的URL地址
